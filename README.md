@@ -1,4 +1,5 @@
 # Occurrence Rate Estimator for Giant Planets and Brown Dwarfs
+Streamlit app: https://meyer2025demographics.streamlit.app/
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
