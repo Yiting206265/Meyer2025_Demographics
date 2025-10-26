@@ -113,7 +113,7 @@ div.stTable {
 ##############################################################################
 
 
-st.write("""Welcome to the on-line tool based on Meyer Li et al. (2025, submitted) meant to provide estimates of the expectation values of the mean number of gas giant planets per star and the mean number of brown dwarfs per star generated from our model. The model assumes that the companion mass ratio of gas giants and brown dwarf companions does not vary with orbital separation. However, it explicitly treats brown dwarf companions as an extension of stellar mass companions drawn from the same orbital separations as a function of host star mass. 
+st.write("""Welcome to the on-line tool based on Meyer Li et al. (arxiv: https://arxiv.org/abs/2508.05122) meant to provide estimates of the expectation values of the mean number of gas giant planets per star and the mean number of brown dwarfs per star generated from our model. The model assumes that the companion mass ratio of gas giants and brown dwarf companions does not vary with orbital separation. However, it explicitly treats brown dwarf companions as an extension of stellar mass companions drawn from the same orbital separations as a function of host star mass. 
 
 In the paper we fit the orbital distribution of gas giants and find that a log-normal function provides a good fit, with a peak near 3.8 AU (two parameters). We also fit for power-law exponents for the companion mass ratio distributions for the brown dwarf companions and gas giant populations separately (two parameters). Finally, we fit for the normalization of both populations (two parameters).
 
