@@ -103,8 +103,8 @@ st.latex(r"\psi_{pl}(q) = q^{-\alpha}")
 st.latex(r"\psi_{bd}(q) = q^{-\beta}")
 
 st.write("Orbital log-normal distributions:")
-st.latex(r"\phi_{pl}(x) = \frac{A_{pl}\,e^{-(x-\mu_{pl})^2/(2\sigma_{pl}^2)}}{x\sqrt{2\pi}\sigma_{pl}\ln 10}")
-st.latex(r"\phi_{bd}(x) = \frac{A_{bd}\,e^{-(x-\mu_{bd})^2/(2\sigma_{bd}^2)}}{x\sqrt{2\pi}\sigma_{bd}\ln 10}")
+st.latex(r"\phi_{pl}(a) = \frac{A_{pl}\,e^{-(x-\mu_{pl})^2/(2\sigma_{pl}^2)}}{a\sqrt{2\pi}\sigma_{pl}\ln 10}")
+st.latex(r"\phi_{bd}(a) = \frac{A_{bd}\,e^{-(x-\mu_{bd})^2/(2\sigma_{bd}^2)}}{a\sqrt{2\pi}\sigma_{bd}\ln 10}")
 
 st.write("These distributions depend on stellar type (M / FGK / A).")
 
