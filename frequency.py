@@ -1,4 +1,4 @@
-"""
+""" 
 Occurrence Rate Estimator for Giant Planets and Brown Dwarfs
 
 This Streamlit application calculates and visualizes the frequency of giant planets and 
@@ -229,6 +229,13 @@ def surface_den_pl_exact(a):
         / (a*np.sqrt(2*np.pi)*sigma_pl)
     )
 
+# === FIX: wrapper functions must exist ===
+def surface_den_pl(a):
+    return surface_den_pl_exact(a)
+
+def surface_den_bd(a):
+    return surface_den_bd_exact(a)
+
 
 
 # --------------------------------------------------------------
@@ -319,10 +326,7 @@ if amin_calc >= amax_calc:
 # ======================================================================
 
 def f_pl(mass_min_mj, mass_max_mj, sep_min_au, sep_max_au, host_mass_msun):
-    """
-    Calculate the mean number of giant planets per star.
-    """
-    M_J = 1.0 / 1000.0  # Jupiter mass ratio
+    M_J = 1.0 / 1000.0
     qmin = (mass_min_mj * M_J) / host_mass_msun
     qmax = (mass_max_mj * M_J) / host_mass_msun
 
@@ -330,18 +334,15 @@ def f_pl(mass_min_mj, mass_max_mj, sep_min_au, sep_max_au, host_mass_msun):
     surf_integral = integrate.quad(surface_den_pl, sep_min_au, sep_max_au)[0]
     return mass_integral * surf_integral
 
-
 def f_bd(mass_min_mj, mass_max_mj, sep_min_au, sep_max_au, host_mass_msun):
-    """
-    Calculate the mean number of brown dwarfs per star.
-    """
-    M_J = 1.0 / 1000.0  # Jupiter mass ratio
+    M_J = 1.0 / 1000.0
     qmin = (mass_min_mj * M_J) / host_mass_msun
     qmax = (mass_max_mj * M_J) / host_mass_msun
 
     mass_integral = integrate.quad(mass_fctn_bd, qmin, qmax)[0]
     surf_integral = integrate.quad(surface_den_bd, sep_min_au, sep_max_au)[0]
     return mass_integral * surf_integral
+
 
 
 ##############################################################################
@@ -352,7 +353,7 @@ def f_bd(mass_min_mj, mass_max_mj, sep_min_au, sep_max_au, host_mass_msun):
 fig, ax = plt.subplots(figsize=(10, 8))
 
 # Define specific mass ratio ranges for each population
-q_pl_min = 0.03 * q_Jupiter     # Planets: lower mass, lower limit
+q_pl_min = 0.03 * q_Jupiter
 q_pl_max = 0.1
 q_bd_min = 3 * q_Jupiter
 q_bd_max = 0.67
@@ -361,69 +362,45 @@ bd_freq = []
 pl_freq = []
 total_freq = []
 
-# Define the range for mass ratios using correct log10 ranges
-mass_ratio_values_pl = np.logspace(
-    np.log10(q_pl_min),
-    np.log10(q_pl_max),
-    1000
-)
+# Mass-ratio grids
+mass_ratio_values_pl = np.logspace(np.log10(q_pl_min), np.log10(q_pl_max), 1000)
+mass_ratio_values_bd = np.logspace(np.log10(q_bd_min), np.log10(q_bd_max), 1000)
+mass_ratio_values_total = np.logspace(np.log10(q_pl_min), np.log10(q_bd_max), 1000)
 
-mass_ratio_values_bd = np.logspace(
-    np.log10(q_bd_min),
-    np.log10(q_bd_max),
-    1000
-)
-
-mass_ratio_values_total = np.logspace(
-    np.log10(q_pl_min),
-    np.log10(q_bd_max),
-    1000
-)
-
-# Compute frequency curves
+# Compute curves
 for q in mass_ratio_values_pl:
-    pl_val = dN_pl(q) * q * np.log(10) if q_pl_min <= q <= q_pl_max else 0
-    pl_freq.append(pl_val)
+    pl_freq.append(dN_pl(q) * q * np.log(10))
 
 for q in mass_ratio_values_bd:
-    bd_val = dN_bd(q) * q * np.log(10) if q_bd_min <= q <= q_bd_max else 0
-    bd_freq.append(bd_val)
+    bd_freq.append(dN_bd(q) * q * np.log(10))
 
 for q in mass_ratio_values_total:
-    bd_val = dN_bd(q) * q * np.log(10) if q_bd_min <= q <= q_bd_max else 0
-    pl_val = dN_pl(q) * q * np.log(10) if q_pl_min <= q <= q_pl_max else 0
+    bd_val = dN_bd(q) * q * np.log(10)
+    pl_val = dN_pl(q) * q * np.log(10)
     total_freq.append(bd_val + pl_val)
 
-# Convert lists to arrays
 bd_freq_array = np.array(bd_freq)
 pl_freq_array = np.array(pl_freq)
 total_freq_array = np.array(total_freq)
 
-# Plot the frequency distribution
+# Plot curves
 ax.plot(np.log10(mass_ratio_values_pl), pl_freq_array, color='r', linewidth=3, label='Giant Planet Model')
 ax.plot(np.log10(mass_ratio_values_bd), bd_freq_array, color='blue', linewidth=3, label='Brown Dwarf Model')
 ax.plot(np.log10(mass_ratio_values_total), total_freq_array, color='orange', linewidth=2, linestyle='-', label='Total Frequency')
 
-# Axis labels
 ax.set_xlabel('log(q)', fontsize=20)
 ax.set_ylabel('dN / dlog(q)', fontsize=20)
 
-# X-axis autoscaling with padding
+# Autoscale X
 try:
-    valid_mask = ~np.isnan(total_freq_array)
-    if np.any(valid_mask):
-        valid_x_pl = np.log10(mass_ratio_values_pl)[valid_mask]
-        valid_x_bd = np.log10(mass_ratio_values_bd)[valid_mask]
-        x_min = np.min(valid_x_pl)
-        x_max = np.max(valid_x_bd)
-        pad = (x_max - x_min) * 0.11
-        ax.set_xlim(x_min - pad, x_max + pad)
-    else:
-        ax.set_xlim(-4, -0.5)
+    x_min = np.min(np.log10(mass_ratio_values_pl))
+    x_max = np.max(np.log10(mass_ratio_values_bd))
+    pad = (x_max - x_min) * 0.11
+    ax.set_xlim(x_min - pad, x_max + pad)
 except:
     ax.set_xlim(-4, -0.5)
 
-# Y-axis autoscaling
+# Autoscale Y
 try:
     max_y = np.nanmax(total_freq_array)
     ax.set_ylim(0, max_y * 1.2)
@@ -434,8 +411,9 @@ ax.tick_params(axis='both', which='major', labelsize=15)
 ax.legend(loc='upper right', fontsize=14)
 ax.set_title("Companion Frequency Distribution", pad=10, fontsize=22)
 
-# Display the plot
 st.pyplot(fig)
+
+
 
 ##############################################################################
 # Section 7 - Frequency Calculations
@@ -444,13 +422,9 @@ st.pyplot(fig)
 mean_num_pl = f_pl(Jup_min, Jup_max, amin_calc, amax_calc, host_mass)
 mean_num_bd = f_bd(Jup_min, Jup_max, amin_calc, amax_calc, host_mass)
 
-# Display results
 st.write(f"Mean Number of Planets Per Star: `{mean_num_pl:.10f}`")
 st.write(f"Mean Number of Brown Dwarfs Per Star: `{mean_num_bd:.10f}`")
 
 st.write("")
 st.write("*Note: These values represent the expected number of companions per star within the specified mass ratio and orbital separation ranges.*")
 
-
-st.write("")
-st.write("*Note: These values represent the expected number of companions per star within the specified mass ratio and orbital separation ranges.*")
