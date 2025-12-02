@@ -266,13 +266,6 @@ q_Jupiter = 0.001 / host_mass
 
 st.markdown("<div class='section-header'>Orbital Separation Range</div>", unsafe_allow_html=True)
 
-c1, c2 = st.columns(2)
-
-with c1:
-    amin_calc = st.number_input("Minimum Separation (AU)", 0.1, 3000.0, 1.0)
-with c2:
-    amax_calc = st.number_input("Maximum Separation (AU)", 0.1, 3000.0, 100.0)
-
 if amin_calc >= amax_calc:
     st.error("Minimum separation must be less than maximum separation.")
     st.stop()
