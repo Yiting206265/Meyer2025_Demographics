@@ -204,7 +204,10 @@ with col1:
 
 with col2:
     alpha_gp = st.slider("α (Planet slope)", -3.0, 3.0, alpha_gp_default, 0.01)
-    A_pl = st.slider("A_pl", 0.0001, 0.1, np.exp(ln_A_pl_default)/ln10, 0.0001)
+    A_pl = st.slider("A_pl", 0.0001, 0.1,
+                     np.exp(ln_A_pl_default)/ln10,
+                     0.0001,
+                     format="%.6f")
     mu_pl = st.slider("log10(μ_pl)", 0.0, 3.0, mu_pl_default/ln10, 0.01)
     sigma_pl = st.slider("log10(σ_pl)", 0.0, 3.0, sigma_pl_default/ln10, 0.01)
 
