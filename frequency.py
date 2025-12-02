@@ -348,6 +348,9 @@ def f_bd(mass_min_mj, mass_max_mj, sep_min_au, sep_max_au, host_mass_msun):
 # Section 5 - Plotting Section (moved here after orbital separation inputs)
 ##############################################################################
 
+# Create a fresh figure for plotting
+fig, ax = plt.subplots(figsize=(10, 8))
+
 # Define specific mass ratio ranges for each population
 q_pl_min = 0.03 * q_Jupiter     # Planets: lower mass, lower limit
 q_pl_max = 0.1
