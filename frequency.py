@@ -171,9 +171,11 @@ host_mass = st.number_input(
 st.markdown("<div class='section-header'>Model Parameters</div>", unsafe_allow_html=True)
 
 st.caption("""
-**March 2 Update:** We corrected a `1/ln(10)` normalization factor in `A_pl` and `A_bd`. 
-The constants have been updated to match the paper. The resulting parameter 
-changes are minor and do not affect the calculated frequencies.
+**March 2 Update:** We have corrected an error in `A_pl` and `A_bd` involving 
+the `1/ln(10)` normalization factor. This factor has now been moved to the integration 
+step instead of being displayed in the slider. The slider values have been 
+updated accordingly and now match the paper. This change does not affect the 
+calculated companion frequencies.
 """)
 
 st.caption("""
